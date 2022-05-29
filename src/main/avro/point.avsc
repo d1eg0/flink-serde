@@ -1,0 +1,25 @@
+{
+    "type": "record",
+    "name": "PointAvro",
+    "namespace": "com.diego.models",
+    "fields": [
+        {
+            "name": "id",
+            "type": "int"
+        },
+        {
+            "name": "x",
+            "type": [
+                "null",
+                "double"
+            ]
+        },
+        {
+            "name": "y",
+            "type": [
+                "null",
+                "double"
+            ]
+        }
+    ]
+}

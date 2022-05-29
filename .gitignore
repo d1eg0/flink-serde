@@ -1,0 +1,8 @@
+.bsp
+.metals
+.vscode
+target
+**/target
+.bloop
+metals.sbt
+project/project
