@@ -50,7 +50,12 @@ class PointSerializer(topic: String, schemaRegistryURL: String) extends KafkaRec
       point: PointAvro,
       context: KafkaRecordSerializationSchema.KafkaSinkContext,
       timestamp: java.lang.Long
-  ): ProducerRecord[Array[Byte], Array[Byte]] =
-    serializeWithConfluent(point)
+  ): ProducerRecord[Array[Byte], Array[Byte]] = {
+    val confluent = serializeWithConfluent(point)
+    // val avro4s = serializeWithAvro4s(point)
+    // println(s"id:${point.id} confluent:'${confluent}'")
+    // println(s"id:${point.id} avro4s:   '${avro4s}'")
+    confluent
+  }
 
 }

@@ -9,6 +9,9 @@ clean:
 fmt:
 	sbt "scalafmtSbt; scalafmtAll"
 
+assembly:
+	sbt assembly
+
 # Tasks #################################################################
 show-avro-schema:
 	sbt "flinkSerialization / runMain com.diego.ShowAvroSchema"

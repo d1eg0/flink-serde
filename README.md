@@ -97,8 +97,9 @@ in a proper serialization will throw an exception
 
 # Object serialization when writing to a Kafka topic
 
-In order to serialize an object to write to Kafka the first try was using [avro4s](https://github.com/sksamuel/avro4s) but the resulting array of bytes is not the same
-as the Confluent serializer, so deserialization with the Kafka console consumer simply fails.
+In order to serialize an object to write to Kafka the first try was using [avro4s](https://github.com/sksamuel/avro4s) but the resulting array of bytes is not the same as the Confluent serializer. I think (and based on avro4s docs) this is because avro4s serializes the object as a Generic Record, when the case class extends from specific record, so deserialization with the Kafka console consumer fails.
+
+Moreover, avro4s has not an integration with the Confluent Schema registry.
 
 For the second attempt I used the Confluent serializer `io.confluent.kafka.serializers`, and based on this repo [https://github.com/spi-x-i/flink-hybrid-source/](https://github.com/spi-x-i/flink-hybrid-source/) and it works perfectly.
 

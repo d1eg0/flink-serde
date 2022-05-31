@@ -28,15 +28,19 @@ import java.lang
 
 import collection.JavaConverters._
 import scala.util.Try
+import com.typesafe.config.ConfigFactory
 
 object AvroProducer extends App {
   val NUM_EVENTS: Int = Try(args(0).toInt).getOrElse(100)
-  
-  val logger          = LoggerFactory.getLogger(this.getClass())
+
+  val logger = LoggerFactory.getLogger(this.getClass())
   logger.info("Avro class serialization")
 
+  val config = ConfigFactory.load()
+
   val topic             = "points_events"
-  val schemaRegistryURL = "http://localhost:8081"
+  val schemaRegistryURL = config.getString("kafka.schema-registry")
+  val brokers = config.getString("kafka.brokers")
 
   val env = StreamExecutionEnvironment.getExecutionEnvironment
   env.getConfig().disableGenericTypes()
@@ -52,7 +56,7 @@ object AvroProducer extends App {
 
   val kafkaSink = KafkaSink
     .builder()
-    .setBootstrapServers("localhost:29092")
+    .setBootstrapServers(brokers)
     .setRecordSerializer(new PointSerializer(topic, schemaRegistryURL))
     .build()
 

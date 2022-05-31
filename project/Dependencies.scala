@@ -27,5 +27,7 @@ object Dependencies {
 
   val logback = "ch.qos.logback" % "logback-classic" % "1.2.11"
 
-  val all = flinkDependencies ++ Seq(avro4s, logback, kafkaAvroSerde.core)
+  val typesafe = "com.typesafe" % "config" % "1.4.1"
+
+  val all = flinkDependencies ++ Seq(avro4s, logback, kafkaAvroSerde.core, typesafe)
 }

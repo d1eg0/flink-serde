@@ -34,3 +34,38 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'PLAINTEXT://kafka:9092'
       SCHEMA_REGISTRY_HOST_NAME: schemaregistry
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+
+  jobmanager:
+    image: flink-serde/latest
+    build: .
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8082:8081"
+    command:
+      standalone-job --job-classname com.diego.AvroProducer
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        parallelism.default: 2
+      - SCHEMA_REGISTRY:=http://schema-registry:8081
+      - BROKERS=kafka:9092
+
+  taskmanager:
+    image: flink-serde/latest
+    build: .
+    depends_on:
+      - jobmanager
+    command:
+      taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2  
+      - SCHEMA_REGISTRY=http://schema-registry:8081
+      - BROKERS=kafka:9092
